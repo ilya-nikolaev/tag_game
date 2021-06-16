@@ -1,4 +1,5 @@
 from copy import deepcopy
+from datetime import datetime, timedelta
 from random import choice
 
 from pygame import gfxdraw
@@ -44,14 +45,20 @@ class Field(Matrix):
         ] for y in range(self._height)]
         
         self.random_body = deepcopy(self.original_body)
-        
+
         super(Field, self).__init__(self.random_body)
+        self.shuffle()
+
+        self.start = datetime.now()
+        self.time = timedelta()
     
     def shuffle(self):
         for _ in range(self.shuffle_moves):
             x0, y0 = self.void_cell
             x, y = choice(self.get_movable())
             self[x, y], self[x0, y0] = self[x0, y0], self[x, y]
+
+        self.start = datetime.now()
     
     def handle_touch(self, x: int, y: int):
         field_x = int(x / WIDTH * self._width)
@@ -62,7 +69,11 @@ class Field(Matrix):
             self[field_x, field_y], self[x0, y0] = self[x0, y0], self[field_x, field_y]
     
     def check_win(self):
+        if self.state == State.win:
+            return None
         if self.random_body == self.original_body:
+            self.time = datetime.now() - self.start
+            self.time -= timedelta(microseconds=self.time.microseconds)
             self.state = State.win
     
     @property
@@ -91,9 +102,15 @@ class Field(Matrix):
     def draw_victory(self):
         self.screen.fill(self.theme.background)
         text = self.theme.font.render(self._victory_text, True, self.theme.text)
+        time = self.theme.font.render(str(self.time), True, self.theme.text)
 
         self.screen.blit(text, ((self.screen.get_width() - text.get_rect().width) // 2,
-                                (self.screen.get_height() - text.get_rect().height) // 2))
+                                (self.screen.get_height() - text.get_rect().height) // 2 +
+                                text.get_rect().height // 2))
+
+        self.screen.blit(time, ((self.screen.get_width() - time.get_rect().width) // 2,
+                                (self.screen.get_height() - time.get_rect().height) // 2 -
+                                time.get_rect().height // 2))
     
     def draw(self):
         

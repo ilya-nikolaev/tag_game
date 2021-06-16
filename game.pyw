@@ -24,7 +24,6 @@ def main():
     pygame.display.set_caption("Tag Game")
     
     field = Field(screen, theme)
-    field.shuffle()
     
     running = True
     while running:
