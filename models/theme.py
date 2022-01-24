@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 
-import pygame.font
+from pygame.font import Font
 
 
 @dataclass
@@ -9,4 +9,4 @@ class Theme:
     cell: tuple[int, int, int]
     border: tuple[int, int, int]
     text: tuple[int, int, int]
-    font: pygame.font.Font
+    font: Font

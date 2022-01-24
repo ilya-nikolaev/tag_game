@@ -1,6 +1,6 @@
 import pygame
 
-from config.screen import SIZE, FPS
+from config import SIZE, FPS, X, Y
 from models import Field, Theme, State
 
 
@@ -8,13 +8,12 @@ def main():
     pygame.init()
     pygame.font.init()
 
-    saros_font = pygame.font.Font('./static/fonts/Saros-Regular.ttf', 72)
     theme = Theme(
         background=(207, 240, 158),
         cell=(168, 219, 168),
         border=(121, 189, 154),
         text=(59, 134, 134),
-        font=saros_font
+        font=pygame.font.Font('./static/fonts/Saros-Regular.ttf', 72)
     )
 
     screen = pygame.display.set_mode(SIZE)
@@ -23,7 +22,7 @@ def main():
     screen.fill(theme.background)
     pygame.display.set_caption("Tag Game")
     
-    field = Field(screen, theme)
+    field = Field(screen, theme, X, Y)
     
     running = True
     while running:

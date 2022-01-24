@@ -2,13 +2,12 @@ from copy import deepcopy
 from datetime import datetime, timedelta
 from random import choice
 
-from pygame import gfxdraw
-from pygame.surface import Surface
+from pygame import Surface, gfxdraw
 
-from config.screen import WIDTH, HEIGHT
+from config import WIDTH, HEIGHT
 from models.theme import Theme
+from models.state import State
 from other import Matrix
-from .state import State
 
 
 def circle(surface, x, y, r, color):
@@ -17,11 +16,11 @@ def circle(surface, x, y, r, color):
 
 
 class Field(Matrix):
-    def __init__(self, screen: Surface, theme: Theme):
+    def __init__(self, screen: Surface, theme: Theme, width: int, height: int):
         self.screen = screen
         
-        self._width = 4
-        self._height = 4
+        self._width = width
+        self._height = height
         
         self.shuffle_moves = 2 ** 15
         

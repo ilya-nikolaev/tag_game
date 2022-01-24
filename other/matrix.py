@@ -40,10 +40,9 @@ class Matrix:
             raise ValueError("dimensions are must be bigger than 1")
     
     def index(self, value):
-        # TODO: optimize
-        for i, row in enumerate(self._body):
-            if value in row:
-                return row.index(value), i
+        for y, row in enumerate(self._body):
+            for x, e in enumerate(row):
+                if e == value: return x, y
         
         raise ValueError(f"{repr(value)} is not in matrix")
     
